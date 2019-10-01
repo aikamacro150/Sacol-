@@ -5,6 +5,8 @@
  */
 package modelo;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Administrador
@@ -12,7 +14,7 @@ package modelo;
 public class Sacole {
     private Integer codigo;
      private String sabor;
-      private String data_de_validade;
+      private LocalDate data_de_validade;
        private Double preco;
         private int nr_de_serie;
 
@@ -32,11 +34,11 @@ public class Sacole {
         this.sabor = sabor;
     }
 
-    public String getData_de_validade() {
+    public LocalDate getData_de_validade() {
         return data_de_validade;
     }
 
-    public void setData_de_validade(String data_de_validade) {
+    public void setData_de_validade(LocalDate data_de_validade) {
         this.data_de_validade = data_de_validade;
     }
 
@@ -60,4 +62,5 @@ public class Sacole {
     public String toString() {
         return "Sacole{" + "sabor=" + sabor + '}';
     }
+    
 }

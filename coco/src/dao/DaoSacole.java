@@ -4,10 +4,14 @@
  * and open the template in the editor.
  */
 package dao;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import modelo.Sacole;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,14 +19,14 @@ import modelo.Sacole;
  */
 public class DaoSacole {
      public static boolean inserir(Sacole objeto) {
-        String sql = "INSERT INTO sacole (sabor, data_d_validade, preco, nr_d_serie) VALUES (?, ?)";
+        String sql = "INSERT INTO sacole (sabor, data_de_validade, preco, nr_de_serie) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement ps = conexao.Conexao.getConexao().prepareStatement(sql);
             ps.setString(1, objeto.getSabor());
-            ps.setString(2, objeto.getData_de_validade());
+             ps.setDate(2, Date.valueOf(objeto.getData_de_validade()));
             ps.setDouble(3, objeto.getPreco());
             ps.setInt(4, objeto.getNr_de_serie());
-            ps.setDate(5, Date.valueOf(objeto.getData_de_validade()));
+            
             
             ps.executeUpdate();
             return true;
@@ -31,19 +35,59 @@ public class DaoSacole {
             return false;
         }
     }
-     public static void main(String[] args) {
-        Sacole objeto = new Sacole();
-        objeto.setSabor("Escuro");
-        objeto.setData_de_validade("10/2/2019");
-        objeto.setNr_de_serie(344);
-        objeto.setPreco(3.2);
-        
-        
-        boolean resultado = inserir(objeto);
-        if (resultado) {
-            JOptionPane.showMessageDialog(null, "Inserido com sucesso!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Erro!");
+ public static boolean alterar(Sacole objeto) {
+        String sql = "UPDATE Sacole SET sabor = ?, data_de_validade = ?, preco = ?, nr_de_serie = ? WHERE codigo=?";
+        try {
+            PreparedStatement ps = conexao.Conexao.getConexao().prepareStatement(sql);
+            ps.setString(1, objeto.getSabor()); 
+            ps.setDate(2, Date.valueOf(objeto.getData_de_validade()));
+            ps.setDouble(3, objeto.getPreco());
+            ps.setDouble(4, objeto.getNr_de_serie());
+            ps.setInt(5, objeto.getCodigo());
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException | ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            return false;
         }
     }
+  public static boolean excluir(Sacole objeto) {
+        String sql = "DELETE FROM Sacole WHERE codigo=?";
+        try {
+            PreparedStatement ps = conexao.Conexao.getConexao().prepareStatement(sql);
+            ps.setInt(1, objeto.getCodigo());
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException | ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+  public static List<Sacole> consultar() {
+        List<Sacole> resultados = new ArrayList<>();
+        //editar o SQL conforme a entidade
+        String sql = "SELECT codigo, nome, descricao FROM produto";
+        PreparedStatement ps;
+        try {
+            ps = conexao.Conexao.getConexao().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Sacole objeto = new Sacole();
+                //definir um set para cada atributo da entidade, cuidado com o tipo
+                objeto.setCodigo(rs.getInt("codigo"));
+                objeto.setSabor(rs.getString("Sabor"));
+                objeto.setPreco(rs.getDouble("Preco"));
+                objeto.setNr_de_serie(rs.getInt("Numero_de_serie"));
+                objeto.setData_de_validade(rs.getDate("data_de_validade").toLocalDate());
+
+
+                
+                resultados.add(objeto);//não mexa nesse, ele adiciona o objeto na lista
+            }
+            return resultados;
+        } catch (SQLException | ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+}
 }
