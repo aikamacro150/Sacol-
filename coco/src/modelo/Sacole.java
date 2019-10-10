@@ -4,19 +4,17 @@
  * and open the template in the editor.
  */
 package modelo;
-
 import java.time.LocalDate;
-
 /**
  *
  * @author Administrador
  */
 public class Sacole {
-    private Integer codigo;
-     private String sabor;
-      private LocalDate data_de_validade;
-       private Double preco;
-        private int nr_de_serie;
+    private Integer codigo; 
+    private String sabor; 
+    private Integer nrserie; 
+    private Double preco; 
+    private LocalDate datavalidade; 
 
     public Integer getCodigo() {
         return codigo;
@@ -34,12 +32,12 @@ public class Sacole {
         this.sabor = sabor;
     }
 
-    public LocalDate getData_de_validade() {
-        return data_de_validade;
+    public Integer getNrserie() {
+        return nrserie;
     }
 
-    public void setData_de_validade(LocalDate data_de_validade) {
-        this.data_de_validade = data_de_validade;
+    public void setNrserie(Integer nrserie) {
+        this.nrserie = nrserie;
     }
 
     public Double getPreco() {
@@ -50,17 +48,19 @@ public class Sacole {
         this.preco = preco;
     }
 
-    public int getNr_de_serie() {
-        return nr_de_serie;
+    public LocalDate getDatavalidade() {
+        return datavalidade;
     }
 
-    public void setNr_de_serie(int nr_de_serie) {
-        this.nr_de_serie = nr_de_serie;
+    public void setDatavalidade(LocalDate datavalidade) {
+        this.datavalidade = datavalidade;
     }
 
     @Override
     public String toString() {
         return "Sacole{" + "sabor=" + sabor + '}';
     }
+
+    
     
 }
